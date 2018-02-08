@@ -12,8 +12,7 @@ struct pole{
 
 void rysuj_plansze(pole gra);
 void dodaj_gwiazdki(pole &gra);
-int stringToInt();
-int intToInput();
+int stringToInt(char input);
 void odkryj(int i, int j, pole &gra);
 void zerowanie(pole &gra);
 void menu();
@@ -89,40 +88,26 @@ void dodaj_gwiazdki(const int GWIAZDKI, pole &gra){
     }
 }
 
-int stringToInt(){
-    string input;
-    do{
-        cin.clear();
-        cin>>input;
-        if(input == "A"){
+int stringToInt(char input){
+        if(input == 'A'){
             return 0;
-        } else if(input == "B"){
+        } else if(input == 'B'){
             return 1;
-        } else if(input == "C"){
+        } else if(input == 'C'){
             return 2;
-        } else if(input == "D"){
+        } else if(input == 'D'){
             return 3;
-        } else if(input == "E"){
+        } else if(input == 'E'){
             return 4;
-        } else if(input == "F"){
+        } else if(input == 'F'){
             return 5;
-        } else if(input == "G"){
+        } else if(input == 'G'){
             return 6;
-        } else if(input == "H"){
+        } else if(input == 'H'){
             return 7;
-        } else if(input == "I"){
+        } else if(input == 'I'){
             return 8;
         }  else cout<<"Zly input, podaj jeszcze raz"<<endl;
-    } while(input != "A" || input != "B" || input != "C" || input != "D" || input != "E" || input != "F" || input != "G" || input != "H" || input != "I");
-}
-
-int intToInput(){
-    int input;
-    do{
-        cin.clear();
-        cin>>input;
-    }while(input < 0 || input > 8);
-    return input;
 }
 
 void odkryj(int i, int j, pole &gra){
@@ -160,17 +145,21 @@ void pomoc(){
 }
 
 void zacznijGre(const int GWIAZDKI, pole &gra){
-    int stan = 0, a, b;
+    int stan = 0, b;
+    char a;
     zerowanie(gra);
     rysuj_plansze(gra);
     cout<<"Od ktorego pola chcesz zaczac"<<endl;
-    a = stringToInt();
-    cin>>b;
-    odkryj(b, a, gra);
-    odkryj(b, a, gra);
+    int dobrze = 0;
+        while(!dobrze){
+            cin>>a>>b;
+            if(b>=0 && b<=8 && a>='A' && a<='I') dobrze = 1;
+        }
+    odkryj(b, stringToInt(a), gra);
+    odkryj(b, stringToInt(a), gra);
     dodaj_gwiazdki(GWIAZDKI, gra);
-    odkryj(b, a, gra);
-    odkryj(b, a, gra);
+    odkryj(b, stringToInt(a), gra);
+    odkryj(b, stringToInt(a), gra);
     system("cls");
     while(!stan){
         system("cls");
@@ -178,11 +167,10 @@ void zacznijGre(const int GWIAZDKI, pole &gra){
         cout<<"Podaj ktore miejsce chcesz teraz odkryc: "<<endl;
         int dobrze = 0;
         while(!dobrze){
-            a = stringToInt();
-            cin>>b;
-            if(b>=0 || b<=8) dobrze = 1;
+            cin>>a>>b;
+            if(b>=0 && b<=8 && a>='A' && a<='I') dobrze = 1;
         }
-        odkryj(b, a, gra);
+        odkryj(b, stringToInt(a), gra);
         stan = przegrana(GWIAZDKI, gra);
     }
 
